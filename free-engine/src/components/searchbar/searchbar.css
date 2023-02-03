@@ -1,0 +1,31 @@
+#fullWidth-label {
+  color: grey;
+}
+#free-solo-demo-label {
+  color: grey;
+}
+#demo-multiple-name-label {
+  color: grey;
+}
+
+#menu-item {
+  width: 120%;
+}
+
+#cities-field.hide {
+  display: none;
+}
+
+@media screen and (max-width: 470px) {
+  .MuiInputBase-adornedEnd {
+    text-overflow: ellipsis;
+  }
+  div.MuiContainer-root:nth-child(3) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  div.MuiBox-root:nth-child(1) {
+    width: 90%;
+  }
+}
