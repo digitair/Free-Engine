@@ -10,6 +10,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useFreelancesStore } from '../../../../context/FreelancesContext';
 import { BarLoader } from "react-spinners";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 export const FreelanceComCards = observer(() => {
   const freelancesStore = useFreelancesStore()
@@ -21,9 +23,9 @@ export const FreelanceComCards = observer(() => {
   useEffect(() => {
     if (freelancesStore.freelanceCom.length > 0 ) {
       setFreelanceCom(freelancesStore.freelanceCom)
-      setTotalPages(Math.ceil((freelanceCom.length - 1) / itemsPerPage))
+      setTotalPages(Math.ceil((freelancesStore.freelanceCom.length - 1) / itemsPerPage))
     }
-  }, [freelancesStore.freelanceCom])
+  }, [freelancesStore.freelanceCom, freelancesStore.pricesRange])
 
   function getFreelanceComCards() {
     if (freelancesStore.loadingFreelanceCom) {
@@ -40,13 +42,13 @@ export const FreelanceComCards = observer(() => {
       const currentItems = actualFreelances.filter((_, i) => i >= startIndex && i < endIndex);
       return currentItems.map((freelance, index) => (
         <Grid key={index} item xs={12} sm={6} md={4} lg={3} xl={2}>
-          <Card key={index} sx={{ maxWidth: 300, margin: "1vh"}} onClick={() => window.open(`https://plateforme.freelance.com${freelance[3]}`, '_blank')}>
+          <Card key={index} sx={{ minWidth: 270, maxWidth: 300, margin: "1vh"}} onClick={() => window.open(`https://plateforme.freelance.com${freelance[3]}`, '_blank')}>
             <CardMedia
               sx={{ height: 200 }}
               image={`${freelance[4]}`}
               title="Profile picture"
             />
-            <CardContent sx={{ height: 125 }}>
+            <CardContent sx={{ height: "160px" }}>
             <Typography variant="body2" color="text.secondary">
                 {freelance[5]}
               </Typography>
@@ -75,20 +77,49 @@ export const FreelanceComCards = observer(() => {
 
   return (
     <>
-      <Typography gutterBottom variant="body" component="div" marginLeft={"2vh"} sx={{ color: "white" }}>
+      <Typography gutterBottom variant="body" component="div" sx={{ color: "white", mt: "3vh", ml: "2vh" }}>
         {freelanceCom == null ? "Attente de résultats" : freelanceCom[freelanceCom.length - 1]} sur Freelance.com
       </Typography>
-      <Grid container spacing={1}>
+      { freelanceCom == null ? "" :
+        <Typography gutterBottom variant="body" component="div" marginLeft={"2vh"} marginTop={"1vh"} sx={{ color: "white" }}>
+          page {currentPage} sur {totalPages} 
+        </Typography>
+      }
+      <Grid container spacing={1}
+        sx={{ mb: "1vh" }}
+      >
         {getFreelanceComCards()}
       </Grid>
-      <Typography gutterBottom variant="body" component="div" marginLeft={"2vh"} marginTop={"2vh"} sx={{ color: "white" }}>
-        page {currentPage} sur {totalPages} 
-      </Typography>
       {currentPage <= totalPages && currentPage >= 2 && 
-        <Button onClick={() => setCurrentPage(currentPage - 1)} sx={{ color: "white", marginLeft: "1vh" }}>Page précédente</Button>
+        <Button 
+          className="btn btn-one" 
+          onClick={() => setCurrentPage(currentPage - 1)} 
+          sx={{ 
+            color: "white", 
+            marginLeft: "1vh",
+            fontFamily: 'monospace',
+            fontWeight: 700,
+          }}
+          startIcon={<ArrowBackIosNewIcon/>}
+        >
+          Précédent
+        </Button>
       }
       {currentPage < totalPages && 
-        <Button onClick={() => setCurrentPage(currentPage + 1)} sx={{ color: "white", marginLeft: "1vh" }}>Page suivante</Button>
+        <Button 
+          className="btn btn-one" 
+          onClick={() => setCurrentPage(currentPage + 1)} 
+          sx={{ 
+            width: "130px",
+            color: "white", 
+            marginLeft: "1vh",
+            fontFamily: 'monospace',
+            fontWeight: 700, 
+          }}
+          endIcon={<ArrowForwardIosIcon/>}
+        >
+          Suivant
+        </Button>
       }
     </>
   );

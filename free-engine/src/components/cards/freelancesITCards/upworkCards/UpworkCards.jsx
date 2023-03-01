@@ -12,44 +12,42 @@ import { useFreelancesStore } from '../../../../context/FreelancesContext';
 import { BarLoader } from "react-spinners";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import "./../cards.css"
 
-export const MaltCards = observer(() => {
+export const UpworkCards = observer(() => {
   const freelancesStore = useFreelancesStore();
-  const [freelancesMalt, setFreelancesMalt] = useState(null);
+  const [freelancesUpwork, setFreelancesUpwork] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 6;
 
   useEffect(() => {
-    if (freelancesStore.freelancesMalt.length > 0) {
-      setFreelancesMalt(freelancesStore.freelancesMalt)
-      setTotalPages(Math.ceil((freelancesStore.freelancesMalt.length - 1) / itemsPerPage))
+    if (freelancesStore.freelancesUpwork.length > 0) {
+      setFreelancesUpwork(freelancesStore.freelancesUpwork)
+      setTotalPages(Math.ceil((freelancesStore.freelancesUpwork.length - 1) / itemsPerPage))
     }
-  }, [freelancesStore.freelancesMalt, currentPage, freelancesStore.pricesRange])
+  }, [freelancesStore.freelancesUpwork, currentPage, freelancesStore.pricesRange])
 
-  function getMaltCards() {
-    if (freelancesStore.loadingMalt) {
+  function getUpworkCards() {
+    if (freelancesStore.loadingUpwork) {
       return (
         <Grid display='flex' height='10vh' marginLeft='45%' marginTop='2vh'>
           <BarLoader color="#e2e612" />
         </Grid>
       )
     }
-    if (freelancesMalt) {
+    if (freelancesUpwork) {
       const startIndex = (currentPage - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
-      const actualFreelances = freelancesMalt.slice(0, -1)
-      const currentItems = actualFreelances.filter((_, i) => i >= startIndex && i < endIndex);
+      const currentItems = freelancesUpwork.filter((_, i) => i >= startIndex && i < endIndex);
       return currentItems.map((freelance, index ) => (
         <Grid key={index} item xs={12} sm={6} md={4} lg={3} xl={2}>
-          <Card key={index} sx={{ minWidth: 270, maxWidth: 300, margin: "1vh"}} onClick={() => window.open(`https://www.malt.fr${freelance[3]}`, '_blank')}>
+          <Card key={index} sx={{ minWidth: 270, maxWidth: 300, margin: "1vh"}} onClick={() => window.open(`https://www.upwork.com/freelancers/${freelance[3]}`, '_blank')}>
             <CardMedia
               sx={{ height: 200 }}
-              image={`${freelance[4]}`}
+              image={`${freelance[4][0]}`}
               title="Profile picture"
             />
-            <CardContent sx={{ height: 125 }}>
+            <CardContent sx={{ height: "250px" }}>
             <Typography variant="body2" color="text.secondary">
                 {freelance[5]}
               </Typography>
@@ -59,12 +57,15 @@ export const MaltCards = observer(() => {
               <Typography gutterBottom variant="h6" sx={{ color: 'blue' }}>
                 {freelance[2].replace(/&nbsp;/g, "")}
               </Typography>
+              <Typography variant="body1" color="text.secondary" marginLeft="2vh">
+                {freelance[6][0] ? freelance[6][0].split(/\s+/).slice(0, 10).join(" ") : ""}
+              </Typography>
             </CardContent>
             <Typography variant="body1" color="text.secondary" marginLeft="2vh">
-              Prix à la journée: {Number.isInteger(freelance[0]) ? freelance[0] : freelance[0].replace(/\D/g, "")} €
+              Prix à l'heure: ${(freelance[0] / 100).toFixed(2)}
             </Typography>
             <CardActions sx={{justifyContent: "center"}}>
-              <Button size="small" onClick={() => window.open(`https://www.malt.fr${freelance[3]}`, '_blank')}>Voir sur Malt.fr</Button>
+              <Button size="small" onClick={() => window.open(`https://www.upwork.com/freelancers/${freelance[3]}`, '_blank')}>Voir sur Upwork.com</Button>
             </CardActions>
           </Card>
         </Grid>
@@ -78,10 +79,10 @@ export const MaltCards = observer(() => {
 
   return (
     <>
-      <Typography gutterBottom variant="body" component="div" sx={{ color: "white", ml: "2vh", mt: "3vh"}}>
-        {freelancesMalt == null ? "Attente de résultats" : freelancesStore.freelancesMalt[freelancesStore.freelancesMalt.length - 1]} sur Malt.fr
+      <Typography gutterBottom variant="body" component="div" sx={{ color: "white", mt: "3vh", ml: "2vh" }}>
+        {freelancesUpwork == null ? "Attente de résultats" : freelancesStore.freelancesUpwork.length} profils par page sur Upwork.com
       </Typography>
-      {freelancesMalt == null ? "" :
+      {freelancesUpwork == null ? "" :
         <Typography gutterBottom variant="body" component="div" marginLeft={"2vh"} marginTop={"1vh"} sx={{ color: "white" }}>
           page {currentPage} sur {totalPages}
         </Typography>
@@ -89,7 +90,7 @@ export const MaltCards = observer(() => {
       <Grid container spacing={1}
         sx={{ mb: "1vh" }}
       >
-        {getMaltCards()}
+        {getUpworkCards()}
       </Grid>
       {currentPage <= totalPages && currentPage >= 2 && 
         <Button 
