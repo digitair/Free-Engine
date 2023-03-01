@@ -14,57 +14,57 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import "./../cards.css"
 
-export const MaltCards = observer(() => {
+export const LehibouCards = observer(() => {
   const freelancesStore = useFreelancesStore();
-  const [freelancesMalt, setFreelancesMalt] = useState(null);
+  const [freelancesLehibou, setFreelancesLehibou] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 6;
 
   useEffect(() => {
-    if (freelancesStore.freelancesMalt.length > 0) {
-      setFreelancesMalt(freelancesStore.freelancesMalt)
-      setTotalPages(Math.ceil((freelancesStore.freelancesMalt.length - 1) / itemsPerPage))
+    if (freelancesStore.freelancesLehibou.length > 0) {
+      setFreelancesLehibou(freelancesStore.freelancesLehibou)
+      setTotalPages(Math.ceil((freelancesStore.freelancesLehibou.length - 1) / itemsPerPage))
     }
-  }, [freelancesStore.freelancesMalt, currentPage, freelancesStore.pricesRange])
+  }, [freelancesStore.freelancesLehibou, currentPage, freelancesStore.pricesRange])
 
-  function getMaltCards() {
-    if (freelancesStore.loadingMalt) {
+  function getLehibouCards() {
+    if (freelancesStore.loadingLehibou) {
       return (
         <Grid display='flex' height='10vh' marginLeft='45%' marginTop='2vh'>
           <BarLoader color="#e2e612" />
         </Grid>
       )
     }
-    if (freelancesMalt) {
+    if (freelancesLehibou) {
       const startIndex = (currentPage - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
-      const actualFreelances = freelancesMalt.slice(0, -1)
-      const currentItems = actualFreelances.filter((_, i) => i >= startIndex && i < endIndex);
+      const currentItems = freelancesLehibou.filter((_, i) => i >= startIndex && i < endIndex);
       return currentItems.map((freelance, index ) => (
         <Grid key={index} item xs={12} sm={6} md={4} lg={3} xl={2}>
-          <Card key={index} sx={{ minWidth: 270, maxWidth: 300, margin: "1vh"}} onClick={() => window.open(`https://www.malt.fr${freelance[3]}`, '_blank')}>
+          <Card key={index} sx={{ minWidth: 270, maxWidth: 300, margin: "1vh"}} onClick={() => window.open(`https://www.Lehibou.com${freelance[2]}`, '_blank')}>
             <CardMedia
               sx={{ height: 200 }}
-              image={`${freelance[4]}`}
+              image={`${freelance[3]}`}
               title="Profile picture"
             />
-            <CardContent sx={{ height: 125 }}>
+            <CardContent sx={{ height: "150px" }}>
             <Typography variant="body2" color="text.secondary">
-                {freelance[5]}
+                {freelance[4]}
               </Typography>
               <Typography variant="h5" component="div">
-                {freelance[1]}
+                {freelance[0]}
               </Typography>
               <Typography gutterBottom variant="h6" sx={{ color: 'blue' }}>
-                {freelance[2].replace(/&nbsp;/g, "")}
+                {freelance[1]}
               </Typography>
             </CardContent>
+
             <Typography variant="body1" color="text.secondary" marginLeft="2vh">
-              Prix à la journée: {Number.isInteger(freelance[0]) ? freelance[0] : freelance[0].replace(/\D/g, "")} €
+              Prix disponnibles sur lehibou.com
             </Typography>
             <CardActions sx={{justifyContent: "center"}}>
-              <Button size="small" onClick={() => window.open(`https://www.malt.fr${freelance[3]}`, '_blank')}>Voir sur Malt.fr</Button>
+              <Button size="small" onClick={() => window.open(`https://www.Lehibou.com${freelance[2]}`, '_blank')}>Voir sur Lehibou.fr</Button>
             </CardActions>
           </Card>
         </Grid>
@@ -79,9 +79,9 @@ export const MaltCards = observer(() => {
   return (
     <>
       <Typography gutterBottom variant="body" component="div" sx={{ color: "white", ml: "2vh", mt: "3vh"}}>
-        {freelancesMalt == null ? "Attente de résultats" : freelancesStore.freelancesMalt[freelancesStore.freelancesMalt.length - 1]} sur Malt.fr
+        {freelancesLehibou == null ? "Attente de résultats" : freelancesStore.freelancesLehibou.length } profils par page sur Lehibou.fr
       </Typography>
-      {freelancesMalt == null ? "" :
+      {freelancesLehibou == null ? "" :
         <Typography gutterBottom variant="body" component="div" marginLeft={"2vh"} marginTop={"1vh"} sx={{ color: "white" }}>
           page {currentPage} sur {totalPages}
         </Typography>
@@ -89,7 +89,7 @@ export const MaltCards = observer(() => {
       <Grid container spacing={1}
         sx={{ mb: "1vh" }}
       >
-        {getMaltCards()}
+        {getLehibouCards()}
       </Grid>
       {currentPage <= totalPages && currentPage >= 2 && 
         <Button 

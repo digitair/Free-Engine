@@ -6,8 +6,12 @@ import { MaltCards } from '../components/cards/freelancesITCards/maltCards/MaltC
 import { MaltCardsFiltered } from '../components/cards/freelancesITCards/maltCards/MaltCardsFiltered'
 import { FreelanceComCards } from '../components/cards/freelancesITCards/freelanceComCards/FreelanceComCards'
 import { FreelanceComCardsFiltered } from '../components/cards/freelancesITCards/freelanceComCards/FreelanceComCardsFiltered'
-import { FiverrCards } from '../components/cards/freelancesITCards/fiverCards/FiverrCards'
-import { ComeupCards } from '../components/cards/freelancesITCards/comeupCards/ComeupCards'
+import { UpworkCards } from '../components/cards/freelancesITCards/upworkCards/UpworkCards'
+import { FixnhourCards } from '../components/cards/freelancesITCards/fixnhourCards/FixnhourCards'
+import { LehibouCards } from '../components/cards/freelancesITCards/lehibouCards/LehibouCards'
+import { ArcdevCards } from '../components/cards/freelancesITCards/arcdevCards/ArcdevCards'
+import { CodementorCards } from '../components/cards/freelancesITCards/codementorCards.jsx/CodementorCards'
+import { TruelancerCards } from '../components/cards/freelancesITCards/truelancerCards/TruelancerCards'
 import { SearchFilters } from '../components/filters/searchFilters'
 import { useState, useEffect } from 'react'
 import { SideMenu } from '../components/sideMenu/SideMenu'
@@ -16,6 +20,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import { useFreelancesStore } from '../context/FreelancesContext'
 import { observer } from 'mobx-react';
+import { MarketplacesLogos } from '../components/marketplacesLogos/MarketplacesLogos'
 
 import "./home.css"
 
@@ -80,6 +85,7 @@ export const Home = observer(() => {
     <>
       <Navbar/>
       <Banner />
+      < MarketplacesLogos/>
       <div className="layout">
         <SearchBar />
         <div className="sideBar" id="sidebar">
@@ -93,11 +99,16 @@ export const Home = observer(() => {
         <div className="main-content" id="main-content">
           <div className="filter-button">
             <Button 
-              variant="contained"
+              className="btn btn-one-home"
               startIcon={<ArrowLeftIcon/>}
               endIcon={<ArrowRightIcon />}
               onClick={displaySideBar}            
-              sx={{ml: "1%"}}
+              sx={{ml: "2vh", 
+                width: "10vw", 
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                color: 'white'
+              }}
             > 
               Filtres 
             </Button>
@@ -113,14 +124,22 @@ export const Home = observer(() => {
           <div id="platform-cards">
             {selectedPlatforms.includes("Malt.fr") ? <MaltCards /> : ""}
             {selectedPlatforms.includes("Freelance.com") ? <FreelanceComCards /> : ""}
-            {selectedPlatforms.includes("Fiverr.com") ? <FiverrCards /> : ""}
-            {selectedPlatforms.includes("Comeup.com") ? <ComeupCards /> : ""}
+            {selectedPlatforms.includes("Upwork.com") ? <UpworkCards /> : ""}
+            {selectedPlatforms.includes("Lehibou.com") ? <LehibouCards /> : ""}
+            {selectedPlatforms.includes("Arc.dev") ? <ArcdevCards /> : ""}
+            {selectedPlatforms.includes("Codementor.io") ? <CodementorCards /> : ""}
+            {selectedPlatforms.includes("Fixnhour.com") ? <FixnhourCards /> : ""}
+            {selectedPlatforms.includes("Truelancer.com") ? <TruelancerCards /> : ""}
             {selectedPlatforms.length === 0 ? (
               <> 
                 <MaltCards /> 
                 <FreelanceComCards />
-                <FiverrCards />
-                <ComeupCards /> 
+                <UpworkCards />
+                <LehibouCards />
+                <ArcdevCards />
+                <CodementorCards />
+                <FixnhourCards />
+                <TruelancerCards />
               </>
             ) : ""}
           </div>
